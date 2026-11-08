@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "vab30f00443a8fa674a",
+  "position": {
+    "x": 650,
+    "y": 60,
+    "z": 4,
+    "height": 90,
+    "width": 200,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Avg Rainfall mm"
+                }
+              },
+              "queryRef": "_Measures.Avg Rainfall mm",
+              "nativeQueryRef": "Avg Rainfall mm"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Avg rainfall (mm/day)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

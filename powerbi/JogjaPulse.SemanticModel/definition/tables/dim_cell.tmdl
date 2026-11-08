@@ -1,0 +1,75 @@
+table dim_cell
+
+	column cell_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: cell_id
+
+	column centroid_lon
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: centroid_lon
+
+	column centroid_lat
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: centroid_lat
+
+	column mean_share
+		dataType: double
+		formatString: 0.000%
+		summarizeBy: none
+		sourceColumn: mean_share
+
+	column days_published
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: days_published
+
+	column share_Weekday
+		dataType: double
+		formatString: 0.000%
+		summarizeBy: none
+		sourceColumn: share_Weekday
+
+	column share_Weekend
+		dataType: double
+		formatString: 0.000%
+		summarizeBy: none
+		sourceColumn: share_Weekend
+
+	column share_Holiday
+		dataType: double
+		formatString: 0.000%
+		summarizeBy: none
+		sourceColumn: share_Holiday
+
+	column holiday_uplift
+		dataType: double
+		formatString: 0.00
+		summarizeBy: none
+		sourceColumn: holiday_uplift
+
+	column weekend_uplift
+		dataType: double
+		formatString: 0.00
+		summarizeBy: none
+		sourceColumn: weekend_uplift
+
+	column rank
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: rank
+
+	partition dim_cell = m
+		mode: import
+		source =
+			let
+				Source = Csv.Document(File.Contents(DataFolder & "\dim_cell.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				Selected = Table.SelectColumns(Promoted, {"cell_id", "centroid_lon", "centroid_lat", "mean_share", "days_published", "share_Weekday", "share_Weekend", "share_Holiday", "holiday_uplift", "weekend_uplift", "rank"}),
+				Typed = Table.TransformColumnTypes(Selected, {{"cell_id", type text}, {"centroid_lon", type number}, {"centroid_lat", type number}, {"mean_share", type number}, {"days_published", Int64.Type}, {"share_Weekday", type number}, {"share_Weekend", type number}, {"share_Holiday", type number}, {"holiday_uplift", type number}, {"weekend_uplift", type number}, {"rank", Int64.Type}}, "en-US")
+			in
+				Typed

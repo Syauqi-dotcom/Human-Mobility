@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v8213d9383af527d8db",
+  "position": {
+    "x": 20,
+    "y": 150,
+    "z": 4,
+    "height": 560,
+    "width": 620,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_od"
+                    }
+                  },
+                  "Property": "origin_kab_kota"
+                }
+              },
+              "queryRef": "fact_od.origin_kab_kota",
+              "nativeQueryRef": "origin_kab_kota"
+            }
+          ]
+        },
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_od"
+                    }
+                  },
+                  "Property": "dest_kab_kota"
+                }
+              },
+              "queryRef": "fact_od.dest_kab_kota",
+              "nativeQueryRef": "dest_kab_kota"
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "OD Visitors"
+                }
+              },
+              "queryRef": "_Measures.OD Visitors",
+              "nativeQueryRef": "OD Visitors"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Origin regency x destination regency (visitors, incl. internal)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

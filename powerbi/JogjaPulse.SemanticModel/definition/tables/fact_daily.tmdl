@@ -1,0 +1,42 @@
+table fact_daily
+
+	column date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		summarizeBy: none
+		sourceColumn: date
+
+	column device_hours
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: device_hours
+
+	column pings
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: pings
+
+	column baseline
+		dataType: double
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: baseline
+
+	column activity_index
+		dataType: double
+		formatString: 0.000
+		summarizeBy: none
+		sourceColumn: activity_index
+
+	partition fact_daily = m
+		mode: import
+		source =
+			let
+				Source = Csv.Document(File.Contents(DataFolder & "\fact_daily.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				Selected = Table.SelectColumns(Promoted, {"date", "device_hours", "pings", "baseline", "activity_index"}),
+				Typed = Table.TransformColumnTypes(Selected, {{"date", type date}, {"device_hours", Int64.Type}, {"pings", Int64.Type}, {"baseline", type number}, {"activity_index", type number}}, "en-US")
+			in
+				Typed

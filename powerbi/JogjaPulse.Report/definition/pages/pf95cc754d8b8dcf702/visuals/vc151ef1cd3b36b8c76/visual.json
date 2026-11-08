@@ -1,0 +1,120 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "vc151ef1cd3b36b8c76",
+  "position": {
+    "x": 810,
+    "y": 150,
+    "z": 4,
+    "height": 270,
+    "width": 450,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "cell_id"
+                }
+              },
+              "queryRef": "dim_cell.cell_id",
+              "nativeQueryRef": "cell_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "centroid_lat"
+                }
+              },
+              "queryRef": "dim_cell.centroid_lat",
+              "nativeQueryRef": "centroid_lat"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "centroid_lon"
+                }
+              },
+              "queryRef": "dim_cell.centroid_lon",
+              "nativeQueryRef": "centroid_lon"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "mean_share"
+                }
+              },
+              "queryRef": "dim_cell.mean_share",
+              "nativeQueryRef": "mean_share"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dim_cell"
+                  }
+                },
+                "Property": "mean_share"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top cells by presence'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

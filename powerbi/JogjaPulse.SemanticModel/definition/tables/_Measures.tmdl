@@ -1,0 +1,61 @@
+table _Measures
+
+	/// Sum of hourly distinct-device counts (device-hours). NOT additive distinct devices.
+	measure 'Device-Hours' = SUM(fact_hourly[n_maids])
+		formatString: #,0
+
+	measure 'Pings' = SUM(fact_hourly[n_pings])
+		formatString: #,0
+
+	measure 'Pings per Device-Hour' = DIVIDE([Pings], [Device-Hours])
+		formatString: 0.00
+
+	/// Share of region-wide device-hours; neutralises the shrinking device sample.
+	measure 'Share of Region %' = DIVIDE([Device-Hours], CALCULATE([Device-Hours], ALL(dim_kapanewon)))
+		formatString: 0.0%
+
+	/// Hourly share of the day's activity.
+	measure 'Share of Day %' = DIVIDE([Device-Hours], CALCULATE([Device-Hours], ALL(fact_hourly[hour])))
+		formatString: 0.0%
+
+	/// Daily device-hours / 15-day rolling median (1.0 = local baseline).
+	measure 'Activity Index' = AVERAGE(fact_daily[activity_index])
+		formatString: 0.000
+
+	measure 'Avg Rainfall mm' = AVERAGE(dim_date[precipitation_sum])
+		formatString: 0.0
+
+	measure 'Avg Day/Night Ratio' = AVERAGE(dim_kapanewon[day_night_ratio])
+		formatString: 0.00
+
+	measure 'Cell Mean Share' = AVERAGE(fact_cell_daily[share])
+		formatString: 0.000%
+
+	measure 'OD Visitors' = SUM(fact_od[n_maids])
+		formatString: #,0
+
+	/// Inter-kapanewon visitors by home (origin) kapanewon.
+	measure 'OD Outbound' = CALCULATE([OD Visitors], fact_od[is_internal] = FALSE())
+		formatString: #,0
+
+	/// Inter-kapanewon visitors by destination kapanewon.
+	measure 'OD Inbound' = CALCULATE([OD Visitors], fact_od[is_internal] = FALSE(), USERELATIONSHIP(fact_od[dest_code], dim_kapanewon[kapanewon_code]))
+		formatString: #,0
+
+	/// >1 = net attractor of visitors.
+	measure 'Attraction Ratio' = DIVIDE([OD Inbound], [OD Outbound])
+		formatString: 0.00
+
+	/// Home-located devices / BPS population.
+	measure 'Device Penetration %' = DIVIDE(SUM(dim_kapanewon[n_users]), SUM(dim_kapanewon[pop_actual]))
+		formatString: 0.0%
+
+	column Dummy
+		isHidden
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: [Dummy]
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW("Dummy", 1)

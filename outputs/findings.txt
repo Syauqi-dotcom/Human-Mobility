@@ -1,0 +1,63 @@
+[1] Mean daily device-hours: 207,906 (Dec) -> 23,254 (Apr), x8.9 decline
+[2] Peak hour weekday=18h, weekend=18h, trough=3h
+[3] Activity index (1.0 = local baseline):
+           mean    std  count
+day_type                     
+Holiday   1.009  0.047      6
+Weekday   1.021  0.124    101
+Weekend   1.000  0.120     41
+    weekday vs weekend/holiday Mann-Whitney p=4.38e-01; diff=-1.9%
+[4] Rain vs activity index Spearman rho=0.038 (p=0.650); weekdays only rho=-0.027 (p=0.791)
+                   mean  count
+rain_class                    
+Dry (<1mm)        1.032      9
+Heavy (>30)       1.080      5
+Light (1-10)      1.033     52
+Moderate (10-30)  0.992     35
+[5] Functional types:
+                                 n  dn_ratio                                                                        members
+functional_type                                                                                                            
+Daytime activity centre         21      2.82        TEMON, SENTOLO, KOKAP, NANGGULAN, PANDAK, BANGUNTAPAN, WONOSARI, PLAYEN
+Insufficient data (suppressed)   8      1.65  PANGGANG, NGAWEN, SAPTOSARI, GIRISUBO, PURWOSARI, RONGKOP, TANJUNGSARI, TEPUS
+Mixed residential-commercial    48      2.22     WATES, PANJATAN, GALUR, LENDAH, PENGASIH, GIRIMULYO, KALIBAWANG, SRANDAKAN
+Night-heavy / round-the-clock    1      0.66                                                                     GONDOMANAN
+[6] Devices vs population log-log r=0.69; mean device penetration=9.0% (median)
+[7] Top 5 cells by mean daily share:
+    cell_id  centroid_lat  centroid_lon  mean_share
+E859_N18274     -7.804607    110.362830    0.075130
+E920_N18228     -8.012978    110.639280    0.041997
+E857_N18294     -7.714142    110.353899    0.032878
+E845_N18275     -7.799984    110.299351    0.019632
+E858_N18293     -7.718672    110.358426    0.016980
+    Top 5 weekend-uplift cells (>=40 days):
+    cell_id  centroid_lat  centroid_lon  weekend_uplift
+E863_N18248        -7.922       110.381           3.903
+E843_N18282        -7.768       110.290           3.119
+E869_N18267        -7.836       110.408           2.084
+E840_N18297        -7.700       110.277           1.957
+E866_N18264        -7.850       110.395           1.857
+[8] Top inter-kapanewon flows (mean visit share, Dec-Feb):
+origin_kapanewon  dest_kapanewon
+KOTAGEDE          BANGUNTAPAN       0.660
+                  UMBULHARJO        0.617
+GALUR             LENDAH            0.505
+PAKUALAMAN        DANUREJAN         0.495
+                  MERGANGSAN        0.451
+GONDOMANAN        SLEMAN            0.433
+TANJUNGSARI       WONOSARI          0.429
+PENGASIH          WATES             0.414
+    Top attractors (in/out):
+                 in   out   net  ratio
+NGAMPILAN      2178   425  1753   5.12
+DANUREJAN      5834  1852  3982   3.15
+GEDONGTENGEN   3049  1009  2040   3.02
+SEMANU         1830   756  1074   2.42
+NGAWEN          308   128   180   2.41
+GONDOKUSUMAN  14801  6760  8041   2.19
+    Mean #other-kapanewon destinations visited per device ~ (visits/home devices):
+month
+2021-12    1.28
+2022-01    1.42
+2022-02    1.57
+    Gravity-style regression log T ~ log H_i + log H_j: b_i=0.42, b_j=0.32, R2=0.29
+[9] Rain sensitivity of local share (weekdays): most negative: ['PLERET', 'PRAMBANAN', 'SENTOLO'], most positive: ['LENDAH', 'BERBAH', 'NGAGLIK']; sig(p<.05)=6/77

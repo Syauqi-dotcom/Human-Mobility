@@ -1,0 +1,75 @@
+table fact_od
+
+	column month
+		dataType: string
+		summarizeBy: none
+		sourceColumn: month
+
+	column origin_code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: origin_code
+
+	column dest_code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: dest_code
+
+	column origin_kab_kota
+		dataType: string
+		summarizeBy: none
+		sourceColumn: origin_kab_kota
+
+	column dest_kab_kota
+		dataType: string
+		summarizeBy: none
+		sourceColumn: dest_kab_kota
+
+	column origin_kapanewon
+		dataType: string
+		summarizeBy: none
+		sourceColumn: origin_kapanewon
+
+	column dest_kapanewon
+		dataType: string
+		summarizeBy: none
+		sourceColumn: dest_kapanewon
+
+	column n_maids
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: n_maids
+
+	column reduced_quality
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: reduced_quality
+
+	column n_homed_maids_daytime
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: n_homed_maids_daytime
+
+	column visit_share
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: visit_share
+
+	column is_internal
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_internal
+
+	partition fact_od = m
+		mode: import
+		source =
+			let
+				Source = Csv.Document(File.Contents(DataFolder & "\fact_od.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				Selected = Table.SelectColumns(Promoted, {"month", "origin_code", "dest_code", "origin_kab_kota", "dest_kab_kota", "origin_kapanewon", "dest_kapanewon", "n_maids", "reduced_quality", "n_homed_maids_daytime", "visit_share", "is_internal"}),
+				Typed = Table.TransformColumnTypes(Selected, {{"month", type text}, {"origin_code", type text}, {"dest_code", type text}, {"origin_kab_kota", type text}, {"dest_kab_kota", type text}, {"origin_kapanewon", type text}, {"dest_kapanewon", type text}, {"n_maids", Int64.Type}, {"reduced_quality", type logical}, {"n_homed_maids_daytime", Int64.Type}, {"visit_share", type number}, {"is_internal", type logical}}, "en-US")
+			in
+				Typed

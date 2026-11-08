@@ -1,0 +1,67 @@
+table dim_kapanewon
+
+	column kapanewon_code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kapanewon_code
+
+	column kapanewon
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kapanewon
+
+	column kab_kota
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kab_kota
+
+	column slot_coverage
+		dataType: double
+		formatString: 0%
+		summarizeBy: none
+		sourceColumn: slot_coverage
+
+	column day_night_ratio
+		dataType: double
+		formatString: 0.00
+		summarizeBy: none
+		sourceColumn: day_night_ratio
+
+	column peak_hour
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: peak_hour
+
+	column n_users
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: n_users
+
+	column pop_actual
+		dataType: double
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: pop_actual
+
+	column ratio
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: ratio
+
+	column functional_type
+		dataType: string
+		summarizeBy: none
+		sourceColumn: functional_type
+
+	partition dim_kapanewon = m
+		mode: import
+		source =
+			let
+				Source = Csv.Document(File.Contents(DataFolder & "\dim_kapanewon.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				Selected = Table.SelectColumns(Promoted, {"kapanewon_code", "kapanewon", "kab_kota", "slot_coverage", "day_night_ratio", "peak_hour", "n_users", "pop_actual", "ratio", "functional_type"}),
+				Typed = Table.TransformColumnTypes(Selected, {{"kapanewon_code", type text}, {"kapanewon", type text}, {"kab_kota", type text}, {"slot_coverage", type number}, {"day_night_ratio", type number}, {"peak_hour", Int64.Type}, {"n_users", Int64.Type}, {"pop_actual", type number}, {"ratio", type number}, {"functional_type", type text}}, "en-US")
+			in
+				Typed

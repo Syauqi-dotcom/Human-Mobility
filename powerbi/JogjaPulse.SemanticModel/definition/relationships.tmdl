@@ -1,0 +1,28 @@
+relationship 7084a7d7af31daa7165e988eb144c04a
+	fromColumn: fact_hourly.kapanewon_code
+	toColumn: dim_kapanewon.kapanewon_code
+
+relationship c35eefc6af3d523ba7d811c529202b15
+	fromColumn: fact_hourly.date
+	toColumn: dim_date.date
+
+relationship 12efdc2e9d988d1a009032e05c1b1a24
+	fromColumn: fact_daily.date
+	toColumn: dim_date.date
+
+relationship 766e47d842d1c3528347be282c630d0b
+	fromColumn: fact_cell_daily.cell_id
+	toColumn: dim_cell.cell_id
+
+relationship 489c7c6caa30f79824f24bcb9b10e2f4
+	fromColumn: fact_cell_daily.date
+	toColumn: dim_date.date
+
+relationship 696e6235f5ec1bf490493cc56d9d25ee
+	fromColumn: fact_od.origin_code
+	toColumn: dim_kapanewon.kapanewon_code
+
+relationship 74a83e272921fb50c779988fce40d77f
+	fromColumn: fact_od.dest_code
+	toColumn: dim_kapanewon.kapanewon_code
+	isActive: false

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "vba53451b41b67ec13b",
+  "position": {
+    "x": 330,
+    "y": 60,
+    "z": 2,
+    "height": 80,
+    "width": 300,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_od"
+                    }
+                  },
+                  "Property": "reduced_quality"
+                }
+              },
+              "queryRef": "fact_od.reduced_quality",
+              "nativeQueryRef": "reduced_quality"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Reduced quality flag'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

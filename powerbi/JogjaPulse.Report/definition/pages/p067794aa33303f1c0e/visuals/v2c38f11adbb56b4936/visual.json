@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v2c38f11adbb56b4936",
+  "position": {
+    "x": 650,
+    "y": 430,
+    "z": 6,
+    "height": 280,
+    "width": 610,
+    "tabOrder": 6
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_hourly"
+                    }
+                  },
+                  "Property": "hour"
+                }
+              },
+              "queryRef": "fact_hourly.hour",
+              "nativeQueryRef": "hour"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Share of Day %"
+                }
+              },
+              "queryRef": "_Measures.Share of Day %",
+              "nativeQueryRef": "Share of Day %"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_kapanewon"
+                    }
+                  },
+                  "Property": "kab_kota"
+                }
+              },
+              "queryRef": "dim_kapanewon.kab_kota",
+              "nativeQueryRef": "kab_kota"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'24h share by regency'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

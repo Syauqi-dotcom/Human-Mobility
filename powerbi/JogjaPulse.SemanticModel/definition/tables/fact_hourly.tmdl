@@ -1,0 +1,40 @@
+table fact_hourly
+
+	column kapanewon_code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: kapanewon_code
+
+	column date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		summarizeBy: none
+		sourceColumn: date
+
+	column hour
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: hour
+
+	column n_maids
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: n_maids
+
+	column n_pings
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: n_pings
+
+	partition fact_hourly = m
+		mode: import
+		source =
+			let
+				Source = Csv.Document(File.Contents(DataFolder & "\fact_hourly.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				Selected = Table.SelectColumns(Promoted, {"kapanewon_code", "date", "hour", "n_maids", "n_pings"}),
+				Typed = Table.TransformColumnTypes(Selected, {{"kapanewon_code", type text}, {"date", type date}, {"hour", Int64.Type}, {"n_maids", Int64.Type}, {"n_pings", Int64.Type}}, "en-US")
+			in
+				Typed

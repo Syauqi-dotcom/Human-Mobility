@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "vac8dafd68f557026db",
+  "position": {
+    "x": 640,
+    "y": 60,
+    "z": 3,
+    "height": 80,
+    "width": 200,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "OD Outbound"
+                }
+              },
+              "queryRef": "_Measures.OD Outbound",
+              "nativeQueryRef": "OD Outbound"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Inter-kapanewon visitors'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

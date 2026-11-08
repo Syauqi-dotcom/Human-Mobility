@@ -1,0 +1,114 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "vaa0fc2e5a347f9cd8a",
+  "position": {
+    "x": 20,
+    "y": 150,
+    "z": 3,
+    "height": 560,
+    "width": 780,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "cell_id"
+                }
+              },
+              "queryRef": "dim_cell.cell_id",
+              "nativeQueryRef": "cell_id"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "centroid_lon"
+                }
+              },
+              "queryRef": "dim_cell.centroid_lon",
+              "nativeQueryRef": "centroid_lon"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "centroid_lat"
+                }
+              },
+              "queryRef": "dim_cell.centroid_lat",
+              "nativeQueryRef": "centroid_lat"
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "mean_share"
+                }
+              },
+              "queryRef": "dim_cell.mean_share",
+              "nativeQueryRef": "mean_share"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'500 m cells: location (lon/lat), size = mean daily share'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+
+ref table dim_date
+ref table dim_kapanewon
+ref table dim_cell
+ref table fact_hourly
+ref table fact_daily
+ref table fact_cell_daily
+ref table fact_od
+ref table _Measures
+
+expression DataFolder = "C:\JogjaPulse\data\processed" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]

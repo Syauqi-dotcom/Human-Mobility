@@ -1,0 +1,120 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "vc95dffa11212f35c2e",
+  "position": {
+    "x": 810,
+    "y": 430,
+    "z": 5,
+    "height": 280,
+    "width": 450,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "cell_id"
+                }
+              },
+              "queryRef": "dim_cell.cell_id",
+              "nativeQueryRef": "cell_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "weekend_uplift"
+                }
+              },
+              "queryRef": "dim_cell.weekend_uplift",
+              "nativeQueryRef": "weekend_uplift"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "holiday_uplift"
+                }
+              },
+              "queryRef": "dim_cell.holiday_uplift",
+              "nativeQueryRef": "holiday_uplift"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cell"
+                    }
+                  },
+                  "Property": "days_published"
+                }
+              },
+              "queryRef": "dim_cell.days_published",
+              "nativeQueryRef": "days_published"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dim_cell"
+                  }
+                },
+                "Property": "weekend_uplift"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top weekend-uplift cells (leisure / tourism)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
