@@ -2,7 +2,15 @@
 
 Analisis pola mobilitas manusia di Daerah Istimewa Yogyakarta memakai data kehadiran perangkat seluler yang sudah dianonimkan (k = 5).
 
-**Anggota kelompok:** _(isi nama dan NIM)_
+**Anggota kelompok:**  
+Arnold Gavrael B.S.  
+Bintang Daneswara 541599  
+Debert Jamie Chanderson 540062  
+Garjita Adicandra  
+Marcelinus Dinoglide Y.P.  
+M. Nabil F. Boernama  
+M. Syauqi Fittuqo  
+Theo Immanuel Sanyoto  
 
 ## Sumber Data
 
