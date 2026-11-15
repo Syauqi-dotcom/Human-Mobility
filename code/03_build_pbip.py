@@ -103,22 +103,30 @@ def proj(ent, prop, rename=None):
     return p
 def M(n): return proj("_Measures", n)
 def C(t, c): return proj(t, c)
+def A(t, c):  # averaged column; scatter X/Y/Size need aggregation when Category is set
+    return {"field": {"Aggregation": {"Expression": fld(t, c), "Function": 1}},
+            "queryRef": f"Avg({t}.{c})", "nativeQueryRef": f"Average of {c}"}
 def lit(s): return {"expr": {"Literal": {"Value": f"'{s}'"}}}
 def lit_raw(v): return {"expr": {"Literal": {"Value": v}}}
+def eq_filter(ent, col, value):  # categorical filter: ent[col] = value (value as DAX literal, e.g. "true")
+    return {"filters": [{"name": f"f_{ent}_{col}", "field": fld(ent, col), "type": "Categorical",
+        "filter": {"Version": 2, "From": [{"Name": "s", "Entity": ent, "Type": 0}],
+                   "Where": [{"Condition": {"In": {"Expressions": [{"Column": {"Expression": {"SourceRef": {"Source": "s"}}, "Property": col}}],
+                                                   "Values": [[{"Literal": {"Value": value}}]]}}}]}}]}
 
 pages = []; nvis = [0]
-def page(title, visuals):
+def page(title, visuals, filters=None):
     pid = "p" + hashlib.md5(title.encode()).hexdigest()[:18]
     d = RP / f"definition/pages/{pid}"; (d / "visuals").mkdir(parents=True)
     (d / "page.json").write_text(json.dumps({"$schema": f"{SCH}/page/2.0.0/schema.json", "name": pid, "displayName": title,
-        "displayOption": "FitToPage", "height": 720, "width": 1280}, indent=2))
+        "displayOption": "FitToPage", "height": 720, "width": 1280, **({"filterConfig": filters} if filters else {})}, indent=2))
     for i,v in enumerate(visuals):
         vid = "v" + hashlib.md5(f"{title}{i}".encode()).hexdigest()[:18]
         (d / f"visuals/{vid}").mkdir()
         (d / f"visuals/{vid}/visual.json").write_text(json.dumps(v(vid, i), indent=2))
     pages.append(pid)
 
-def visual(vtype, x, y, w, h, title, roles, objects=None, sort=None):
+def visual(vtype, x, y, w, h, title, roles, objects=None, sort=None, filters=None):
     def build(name, z):
         q = {"queryState": {r: {"projections": ps} for r, ps in roles.items()}}
         if sort: q["sortDefinition"] = {"sort": [{"field": sort[0], "direction": sort[1]}], "isDefaultSort": True}
@@ -126,7 +134,8 @@ def visual(vtype, x, y, w, h, title, roles, objects=None, sort=None):
                "visualContainerObjects": {"title": [{"properties": {"show": lit_raw("true"), "text": lit(title)}}]} if title else {}}
         if objects: vis["objects"] = objects
         return {"$schema": f"{SCH}/visualContainer/2.0.0/schema.json", "name": name,
-                "position": {"x": x, "y": y, "z": z, "height": h, "width": w, "tabOrder": z}, "visual": vis}
+                "position": {"x": x, "y": y, "z": z, "height": h, "width": w, "tabOrder": z}, "visual": vis,
+                **({"filterConfig": filters} if filters else {})}
     return build
 def textbox(x, y, w, h, text, size=20, bold=True):
     def build(name, z):
@@ -156,7 +165,7 @@ page("2. Spatial Hotspots", [
  slicer(20,60,300,80,"dim_date","day_type","Day type"),
  card(330,60,250,80,"Cell Mean Share","Mean cell share"),
  visual("scatterChart",20,150,780,560,"500 m cells: location (lon/lat), size = mean daily share",
-   {"Category":[C("dim_cell","cell_id")],"X":[C("dim_cell","centroid_lon")],"Y":[C("dim_cell","centroid_lat")],"Size":[C("dim_cell","mean_share")]}),
+   {"Category":[C("dim_cell","cell_id")],"X":[A("dim_cell","centroid_lon")],"Y":[A("dim_cell","centroid_lat")],"Size":[A("dim_cell","mean_share")]}),
  visual("tableEx",810,150,450,270,"Top cells by presence",{"Values":[C("dim_cell","cell_id"),C("dim_cell","centroid_lat"),C("dim_cell","centroid_lon"),C("dim_cell","mean_share")]},sort=(fld("dim_cell","mean_share"),"Descending")),
  visual("tableEx",810,430,450,280,"Top weekend-uplift cells (leisure / tourism)",{"Values":[C("dim_cell","cell_id"),C("dim_cell","weekend_uplift"),C("dim_cell","holiday_uplift"),C("dim_cell","days_published")]},sort=(fld("dim_cell","weekend_uplift"),"Descending")),
 ])
@@ -167,7 +176,7 @@ page("3. Sub-district Profiles", [
  slicer(430,60,300,80,"dim_kapanewon","kab_kota","Regency / city"),
  card(740,60,250,80,"Device Penetration %","Devices / population"),
  visual("clusteredBarChart",20,150,620,560,"Day/night presence ratio by kapanewon",{"Category":[C("dim_kapanewon","kapanewon")],"Y":[M("Avg Day/Night Ratio")]},sort=(fld("_Measures","Avg Day/Night Ratio"),"Descending")),
- visual("scatterChart",650,150,610,270,"Representativeness: population vs devices",{"Category":[C("dim_kapanewon","kapanewon")],"X":[C("dim_kapanewon","pop_actual")],"Y":[C("dim_kapanewon","n_users")]}),
+ visual("scatterChart",650,150,610,270,"Representativeness: population vs devices",{"Category":[C("dim_kapanewon","kapanewon")],"X":[A("dim_kapanewon","pop_actual")],"Y":[A("dim_kapanewon","n_users")]}),
  visual("lineChart",650,430,610,280,"24h share by regency",{"Category":[C("fact_hourly","hour")],"Y":[M("Share of Day %")],"Series":[C("dim_kapanewon","kab_kota")]}),
 ])
 # Page 4 - OD flows
@@ -178,7 +187,7 @@ page("4. Origin-Destination", [
  visual("pivotTable",20,150,620,560,"Origin regency x destination regency (visitors, incl. internal)",{"Rows":[C("fact_od","origin_kab_kota")],"Columns":[C("fact_od","dest_kab_kota")],"Values":[M("OD Visitors")]}),
  visual("clusteredBarChart",650,150,610,270,"Top net attractors (inbound/outbound ratio)",{"Category":[C("dim_kapanewon","kapanewon")],"Y":[M("Attraction Ratio")]},sort=(fld("_Measures","Attraction Ratio"),"Descending")),
  visual("clusteredBarChart",650,430,610,280,"Top destinations by inbound visitors",{"Category":[C("dim_kapanewon","kapanewon")],"Y":[M("OD Inbound")]},sort=(fld("_Measures","OD Inbound"),"Descending")),
-])
+], filters=eq_filter("fact_od","reduced_quality","false"))
 # Page 5 - weather & holidays (source 2)
 page("5. Weather & Holidays", [
  textbox(20,8,1240,44,"External source: Open-Meteo rainfall + Indonesian public holidays",20),
@@ -186,13 +195,13 @@ page("5. Weather & Holidays", [
  visual("scatterChart",20,150,620,280,"Rainfall vs activity index (each dot = day)",{"Category":[C("dim_date","date")],"X":[M("Avg Rainfall mm")],"Y":[M("Activity Index")]}),
  visual("clusteredColumnChart",650,150,610,280,"Activity index by rain class",{"Category":[C("dim_date","rain_class")],"Y":[M("Activity Index")]}),
  visual("lineChart",20,440,620,270,"Daily rainfall (mm)",{"Category":[C("dim_date","date")],"Y":[M("Avg Rainfall mm")]}),
- visual("tableEx",650,440,610,270,"Holidays & activity",{"Values":[C("dim_date","date"),C("dim_date","holiday_name"),M("Activity Index")]}),
+ visual("tableEx",650,440,610,270,"Holidays & activity",{"Values":[C("dim_date","date"),C("dim_date","holiday_name"),M("Activity Index")]},filters=eq_filter("dim_date","is_holiday","true")),
 ])
 
 (RP / "definition/version.json").write_text(json.dumps({"$schema": f"{SCH}/versionMetadata/1.0.0/schema.json", "version": "2.0.0"}, indent=2))
 (RP / "definition/report.json").write_text(json.dumps({"$schema": f"{SCH}/report/3.0.0/schema.json",
-   "themeCollection": {"baseTheme": {"name": "CY24SU10", "reportVersionAtImport": "5.61", "type": "SharedResources"}},
-   "layoutOptimization": "None", "settings": {"useStylableVisualContainerHeader": True}}, indent=2))
+   "themeCollection": {"baseTheme": {"name": "CY24SU10", "reportVersionAtImport": {"visual": "1.8.50", "report": "2.0.50", "page": "1.3.50"}, "type": "SharedResources"}},
+   "settings": {"useStylableVisualContainerHeader": True}}, indent=2))
 (RP / "definition/pages/pages.json").write_text(json.dumps({"$schema": f"{SCH}/pagesMetadata/1.0.0/schema.json", "pageOrder": pages, "activePageName": pages[0]}, indent=2))
 (RP / "definition.pbir").write_text(json.dumps({"version": "4.0", "datasetReference": {"byPath": {"path": "../JogjaPulse.SemanticModel"}}}, indent=2))
 (PB / "JogjaPulse.pbip").write_text(json.dumps({"version": "1.0", "artifacts": [{"report": {"path": "JogjaPulse.Report"}}], "settings": {"enableAutoRecovery": True}}, indent=2))

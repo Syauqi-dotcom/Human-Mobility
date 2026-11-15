@@ -35,17 +35,22 @@
           "projections": [
             {
               "field": {
-                "Column": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_kapanewon"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dim_kapanewon"
+                        }
+                      },
+                      "Property": "pop_actual"
                     }
                   },
-                  "Property": "pop_actual"
+                  "Function": 1
                 }
               },
-              "queryRef": "dim_kapanewon.pop_actual",
-              "nativeQueryRef": "pop_actual"
+              "queryRef": "Avg(dim_kapanewon.pop_actual)",
+              "nativeQueryRef": "Average of pop_actual"
             }
           ]
         },
@@ -53,17 +58,22 @@
           "projections": [
             {
               "field": {
-                "Column": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_kapanewon"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dim_kapanewon"
+                        }
+                      },
+                      "Property": "n_users"
                     }
                   },
-                  "Property": "n_users"
+                  "Function": 1
                 }
               },
-              "queryRef": "dim_kapanewon.n_users",
-              "nativeQueryRef": "n_users"
+              "queryRef": "Avg(dim_kapanewon.n_users)",
+              "nativeQueryRef": "Average of n_users"
             }
           ]
         }

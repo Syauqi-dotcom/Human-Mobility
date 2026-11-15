@@ -35,17 +35,22 @@
           "projections": [
             {
               "field": {
-                "Column": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_cell"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dim_cell"
+                        }
+                      },
+                      "Property": "centroid_lon"
                     }
                   },
-                  "Property": "centroid_lon"
+                  "Function": 1
                 }
               },
-              "queryRef": "dim_cell.centroid_lon",
-              "nativeQueryRef": "centroid_lon"
+              "queryRef": "Avg(dim_cell.centroid_lon)",
+              "nativeQueryRef": "Average of centroid_lon"
             }
           ]
         },
@@ -53,17 +58,22 @@
           "projections": [
             {
               "field": {
-                "Column": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_cell"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dim_cell"
+                        }
+                      },
+                      "Property": "centroid_lat"
                     }
                   },
-                  "Property": "centroid_lat"
+                  "Function": 1
                 }
               },
-              "queryRef": "dim_cell.centroid_lat",
-              "nativeQueryRef": "centroid_lat"
+              "queryRef": "Avg(dim_cell.centroid_lat)",
+              "nativeQueryRef": "Average of centroid_lat"
             }
           ]
         },
@@ -71,17 +81,22 @@
           "projections": [
             {
               "field": {
-                "Column": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_cell"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dim_cell"
+                        }
+                      },
+                      "Property": "mean_share"
                     }
                   },
-                  "Property": "mean_share"
+                  "Function": 1
                 }
               },
-              "queryRef": "dim_cell.mean_share",
-              "nativeQueryRef": "mean_share"
+              "queryRef": "Avg(dim_cell.mean_share)",
+              "nativeQueryRef": "Average of mean_share"
             }
           ]
         }
