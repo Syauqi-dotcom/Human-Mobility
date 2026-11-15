@@ -114,6 +114,21 @@ def eq_filter(ent, col, value):  # categorical filter: ent[col] = value (value a
                    "Where": [{"Condition": {"In": {"Expressions": [{"Column": {"Expression": {"SourceRef": {"Source": "s"}}, "Property": col}}],
                                                    "Values": [[{"Literal": {"Value": value}}]]}}}]}}]}
 
+# Satellite basemap (code/basemap.py ... satellite) as the scatter plot-area background; axes locked to the image extent
+BASEMAP = "diy_basemap.png"
+LON0, LON1, LAT0, LAT1 = 109.92, 110.94, -8.22, -7.52
+BASEMAP_OBJECTS = {
+    "plotArea": [{"properties": {"image": {"image": {
+        "name": lit(BASEMAP),
+        "url": {"expr": {"ResourcePackageItem": {"PackageName": "RegisteredResources", "PackageType": 1, "ItemName": BASEMAP}}},
+        "scaling": lit("Fit")}}, "transparency": lit_raw("0D")}}],
+    "dataPoint": [{"properties": {"fill": {"solid": {"color": lit("#FFC000")}}}}],  # bright markers on satellite imagery
+    "categoryAxis": [{"properties": {"start": lit_raw(f"{LON0}D"), "end": lit_raw(f"{LON1}D"), "gridlineShow": lit_raw("false")}}],
+    "valueAxis": [{"properties": {"start": lit_raw(f"{LAT0}D"), "end": lit_raw(f"{LAT1}D"), "gridlineShow": lit_raw("false")}}],
+}
+res = RP / "StaticResources/RegisteredResources"; res.mkdir(parents=True)
+shutil.copy(ROOT / "data/basemap" / BASEMAP, res / BASEMAP)
+
 pages = []; nvis = [0]
 def page(title, visuals, filters=None):
     pid = "p" + hashlib.md5(title.encode()).hexdigest()[:18]
@@ -165,7 +180,8 @@ page("2. Spatial Hotspots", [
  slicer(20,60,300,80,"dim_date","day_type","Day type"),
  card(330,60,250,80,"Cell Mean Share","Mean cell share"),
  visual("scatterChart",20,150,780,560,"500 m cells: location (lon/lat), size = mean daily share",
-   {"Category":[C("dim_cell","cell_id")],"X":[A("dim_cell","centroid_lon")],"Y":[A("dim_cell","centroid_lat")],"Size":[A("dim_cell","mean_share")]}),
+   {"Category":[C("dim_cell","cell_id")],"X":[A("dim_cell","centroid_lon")],"Y":[A("dim_cell","centroid_lat")],"Size":[A("dim_cell","mean_share")]},
+   objects=BASEMAP_OBJECTS),
  visual("tableEx",810,150,450,270,"Top cells by presence",{"Values":[C("dim_cell","cell_id"),C("dim_cell","centroid_lat"),C("dim_cell","centroid_lon"),C("dim_cell","mean_share")]},sort=(fld("dim_cell","mean_share"),"Descending")),
  visual("tableEx",810,430,450,280,"Top weekend-uplift cells (leisure / tourism)",{"Values":[C("dim_cell","cell_id"),C("dim_cell","weekend_uplift"),C("dim_cell","holiday_uplift"),C("dim_cell","days_published")]},sort=(fld("dim_cell","weekend_uplift"),"Descending")),
 ])
@@ -201,6 +217,8 @@ page("5. Weather & Holidays", [
 (RP / "definition/version.json").write_text(json.dumps({"$schema": f"{SCH}/versionMetadata/1.0.0/schema.json", "version": "2.0.0"}, indent=2))
 (RP / "definition/report.json").write_text(json.dumps({"$schema": f"{SCH}/report/3.0.0/schema.json",
    "themeCollection": {"baseTheme": {"name": "CY24SU10", "reportVersionAtImport": {"visual": "1.8.50", "report": "2.0.50", "page": "1.3.50"}, "type": "SharedResources"}},
+   "resourcePackages": [{"name": "RegisteredResources", "type": "RegisteredResources",
+                         "items": [{"name": BASEMAP, "path": BASEMAP, "type": "Image"}]}],
    "settings": {"useStylableVisualContainerHeader": True}}, indent=2))
 (RP / "definition/pages/pages.json").write_text(json.dumps({"$schema": f"{SCH}/pagesMetadata/1.0.0/schema.json", "pageOrder": pages, "activePageName": pages[0]}, indent=2))
 (RP / "definition.pbir").write_text(json.dumps({"version": "4.0", "datasetReference": {"byPath": {"path": "../JogjaPulse.SemanticModel"}}}, indent=2))

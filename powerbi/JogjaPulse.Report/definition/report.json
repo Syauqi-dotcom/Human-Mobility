@@ -11,6 +11,19 @@
       "type": "SharedResources"
     }
   },
+  "resourcePackages": [
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "diy_basemap.png",
+          "path": "diy_basemap.png",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
   "settings": {
     "useStylableVisualContainerHeader": true
   }
