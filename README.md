@@ -9,7 +9,7 @@ Debert Jamie Chanderson 540062
 Garjita Adicandra  
 Marcelinus Dinoglide Y.P.  
 M. Nabil F. Boernama  
-M. Syauqi Fittuqo  
+M. Syauqi Fittuqo 543713 
 Theo Immanuel Sanyoto  
 
 ## Sumber Data
