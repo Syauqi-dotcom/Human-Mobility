@@ -12,4 +12,4 @@ ref table fact_cell_daily
 ref table fact_od
 ref table _Measures
 
-expression DataFolder = "C:\JogjaPulse\data\processed" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression DataFolder = "D:\Dev\Rekdat\Human-Mobility\data\processed" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
